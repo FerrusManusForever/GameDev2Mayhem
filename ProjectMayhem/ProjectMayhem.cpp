@@ -12,8 +12,8 @@ const int resX = 1920;
 const int resY = 1080;
 const int GridSizeX = 10;
 const int GridSizeY = 10;
-const float tileSizeX = resX / GridSizeX;
-const float tileSizeY = resY / GridSizeY;
+const float tileSize = resY / GridSizeX;
+
 
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window* window = NULL;
@@ -41,7 +41,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    Game = new DungeonGame(tileSizeX, tileSizeY);
+    Game = new DungeonGame(tileSize, tileSize);
     Game->LoadTextures(renderer);
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -56,28 +56,26 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
     if (event->type == SDL_EVENT_KEY_DOWN)
     {
+
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-  
+            Game->RectHero.y -= tileSize;
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-      
+            Game->RectHero.y += tileSize;
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-
+            Game->RectHero.x -= tileSize;
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-
+            Game->RectHero.x += tileSize;
         }
 
     }
-
-
-
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 
