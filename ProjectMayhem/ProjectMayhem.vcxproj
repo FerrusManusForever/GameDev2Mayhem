@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\amaxwell\Documents\CLibs\SDL3-3.2.16\include;C:\Users\amaxwell\Documents\CLibs\SDL3_image-3.2.4\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\amaxwell\Documents\CLibs\SDL3-3.2.16\lib\x64;C:\Users\amaxwell\Documents\CLibs\SDL3_image-3.2.4\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GitRepos\CLibs\SDL3-3.2.16\include;C:\GitRepos\CLibs\SDL3_image-3.2.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GitRepos\CLibs\SDL3-3.2.16\lib\x64;C:\GitRepos\CLibs\SDL3_image-3.2.4\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,7 +132,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DungeonGame.cpp" />
+    <ClCompile Include="GameCharacter.cpp" />
     <ClCompile Include="ProjectMayhem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DungeonGame.h" />
+    <ClInclude Include="GameCharacter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
