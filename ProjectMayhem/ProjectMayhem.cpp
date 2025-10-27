@@ -60,19 +60,19 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-            Game->RectHero.y -= tileSize;
+            Game->Hero->Rect.y -= tileSize;
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-            Game->RectHero.y += tileSize;
+            Game->Hero->Rect.y += tileSize;
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            Game->RectHero.x -= tileSize;
+            Game->Hero->Rect.x -= tileSize;
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            Game->RectHero.x += tileSize;
+            Game->Hero->Rect.x += tileSize;
         }
 
     }
@@ -91,7 +91,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     // Your Update code goes here.
 
-    SDL_RenderTexture(renderer, Game->texHero, NULL, &Game->RectHero);
+    //SDL_RenderTexture(renderer, Game->texHero, NULL, &Game->RectHero);
+    SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
 
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 

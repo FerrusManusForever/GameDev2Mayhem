@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include "GameCharacter.h"
+#include "Player.h"
 
 const static std::string path_Hero = "Sprites/Hero_Sword.png";
 
@@ -12,8 +13,8 @@ public:
 	DungeonGame(float tileSizeX, float tileSizeY);
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
-	SDL_FRect RectHero;
-	SDL_Texture* texHero;
+	Player* Hero;
+
 private:
 	
 	float tileSizeX;
