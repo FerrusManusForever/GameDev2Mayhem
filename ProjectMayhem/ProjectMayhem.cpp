@@ -43,6 +43,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 
     Game = new DungeonGame(tileSize, tileSize);
     Game->LoadTextures(renderer);
+
+    const char* room = "Data/Rooms/Room02.bmp";
+    Game->LoadRoom(room);
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -92,6 +95,22 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     // Your Update code goes here.
 
     //SDL_RenderTexture(renderer, Game->texHero, NULL, &Game->RectHero);
+   
+
+    // draw the grid
+    for (int x = 0; x < 10; x++)
+    {
+        for (int y = 0; y < 10; y++)
+        {
+            if (Game->Tiles[x][y].Walkable)
+            {
+                SDL_RenderTexture(renderer, Game->Tiles[x][y].Texture, NULL, &Game->Tiles[x][y].Rect);
+            }
+            
+        }
+    }
+
+
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
 
     SDL_RenderPresent(renderer);  /* put it all on the screen! */

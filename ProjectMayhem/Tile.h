@@ -8,7 +8,7 @@ public:
 	bool Walkable;
 	SDL_Texture* Texture;
 	SDL_FRect Rect;
-	void Configure(SDL_Color& color, float x , float y, float size);
+	void Configure(SDL_Color& color, float x , float y, float size, SDL_Texture* textures[]);
 private:
 
 };

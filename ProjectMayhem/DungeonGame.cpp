@@ -36,10 +36,10 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 
 }
 
-void DungeonGame::LoadRoom(char* filename)
+void DungeonGame::LoadRoom(const char* filename)
 {
 	SDL_Surface* surface = SDL_LoadBMP(filename);
-	//Uint8 r = 0u, g = 0u, b = 0u;
+
 	const SDL_PixelFormatDetails* pixelDetails = SDL_GetPixelFormatDetails(surface->format);
 	const Uint8 bpp = SDL_BYTESPERPIXEL(surface->format);
 	SDL_Color col;
@@ -52,7 +52,7 @@ void DungeonGame::LoadRoom(char* filename)
 				&col.b);
 
 			// now configure the tile at x,y with col
-			this->Tiles[x][y].Configure(col, x, y, tileSizeX);
+			this->Tiles[x][y].Configure(col, x, y, tileSizeX, this->CarpetTextures);
 
 		}
 	}

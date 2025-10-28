@@ -21,7 +21,7 @@ public:
 	DungeonGame(float tileSizeX, float tileSizeY);
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
-	void LoadRoom(char* file);
+	void LoadRoom(const char* file);
 	Player* Hero;
 	Tile Tiles[RoomSize][RoomSize];
 	SDL_Texture* CarpetTextures[3];
