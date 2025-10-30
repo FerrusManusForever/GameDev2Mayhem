@@ -24,7 +24,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Hero->Rect.w = tileSizeX;
 	this->Hero->Rect.h = tileSizeY;
 
-	// Load carpet textures
+	// Load carpet textures		// TODO probably want a better system to handle these.
 	for (int n = 0; n < 3; n++)
 	{
 		this->CarpetTextures[n] = IMG_LoadTexture(renderer, path_Carpet[n].c_str());
@@ -45,10 +45,6 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 		this->CheckTextures[n] = IMG_LoadTexture(renderer, path_Check[n].c_str());
 		SDL_SetTextureScaleMode(this->CheckTextures[n], SDL_SCALEMODE_NEAREST);
 	}
-
-
-	// TODO more tileset textures here.
-
 	
 
 }
