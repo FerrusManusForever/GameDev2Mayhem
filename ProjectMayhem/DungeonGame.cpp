@@ -30,6 +30,23 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 		this->CarpetTextures[n] = IMG_LoadTexture(renderer, path_Carpet[n].c_str());
 		SDL_SetTextureScaleMode(this->CarpetTextures[n], SDL_SCALEMODE_NEAREST);
 	}
+
+	// Load grey tile textures
+	for (int n = 0; n < 7; n++)
+	{
+		this->GreyTextures[n] = IMG_LoadTexture(renderer, path_Grey[n].c_str());
+		SDL_SetTextureScaleMode(this->GreyTextures[n], SDL_SCALEMODE_NEAREST);
+	}
+
+
+	// Load check textures
+	for (int n = 0; n < 4; n++)
+	{
+		this->CheckTextures[n] = IMG_LoadTexture(renderer, path_Check[n].c_str());
+		SDL_SetTextureScaleMode(this->CheckTextures[n], SDL_SCALEMODE_NEAREST);
+	}
+
+
 	// TODO more tileset textures here.
 
 	
@@ -52,7 +69,7 @@ void DungeonGame::LoadRoom(const char* filename)
 				&col.b);
 
 			// now configure the tile at x,y with col
-			this->Tiles[x][y].Configure(col, x, y, tileSizeX, this->CarpetTextures);
+			this->Tiles[x][y].Configure(col, x, y, tileSizeX, this->CarpetTextures, this->GreyTextures, this->CheckTextures);
 
 		}
 	}

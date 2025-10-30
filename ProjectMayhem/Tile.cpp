@@ -1,5 +1,5 @@
 #include "Tile.h"
-
+#include <random>
 bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 {
 	return col1.r == col2.r &&
@@ -7,9 +7,15 @@ bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 		col1.g == col2.g ;
 }
 
-void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture* textures[])
+void Tile::Configure(SDL_Color& color, float x, float y, float size,
+	SDL_Texture* tilesetA[],SDL_Texture* tilesetB[],SDL_Texture* tilesetC[])
 {
 	SDL_Color black = { 0, 0, 0, 255 };
+	SDL_Color red = { 255, 0, 0, 255 };
+	SDL_Color green = { 0, 255, 0, 255 };
+	SDL_Color blue = { 0, 0, 255, 255 };
+
+
 	if (CompareColours(color, black))
 	{
 		Walkable = false;
@@ -18,7 +24,31 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture
 	else
 	{
 		Walkable = true;
-		this->Texture = textures[1];
+
+		// Check if it's red, green or blue and choose the right tileset.
+
+		if (CompareColours(color, red))	// carpet, tileset A, max 3
+		{
+			int max = 3;
+			int index = rand() % max;
+			this->Texture = tilesetA[index];
+			
+		}
+		else if (CompareColours(color, green))		// grey, tileset B, max 7
+		{
+			int max = 7;
+			int index = rand() % max;
+			this->Texture = tilesetB[index];
+		}
+		else
+		{
+			// checker, tileset C, max 4
+			int max = 4;
+			int index = rand() % max;
+			this->Texture = tilesetC[index];
+		}
+
+		
 	}
 
 	//this->Rect = { x * size, y * size, size, size };
