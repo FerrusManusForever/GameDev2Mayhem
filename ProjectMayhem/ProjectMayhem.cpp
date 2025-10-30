@@ -44,7 +44,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     Game = new DungeonGame(tileSize, tileSize);
     Game->LoadTextures(renderer);
 
-    const char* room = "Data/Rooms/Room02.bmp";
+    const char* room = "Data/Rooms/Room01.bmp";
     Game->LoadRoom(room);
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
