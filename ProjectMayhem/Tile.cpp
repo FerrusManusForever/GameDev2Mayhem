@@ -31,7 +31,7 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size,
 
 		if (CompareColours(color, red))	// carpet, tileset A, max 3
 		{
-			if (rand() % 10 <= 1)
+			if (rand() % 10 == 1)
 			{
 				this->Texture = tilesetA[0];
 			}
@@ -45,7 +45,7 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size,
 		}
 		else if (CompareColours(color, green))		// grey, tileset B, max 7
 		{
-			if (rand() % 10 <= 1)
+			if (rand() % 10 == 1)
 			{
 				this->Texture = tilesetB[0];
 			}
@@ -58,7 +58,7 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size,
 		}
 		else
 		{
-			if (rand() % 10 <= 1)
+			if (rand() % 10 == 1)
 			{
 				this->Texture = tilesetC[0];
 			}
