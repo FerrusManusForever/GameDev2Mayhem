@@ -73,6 +73,9 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             {
                 Game->Place(*Game->Hero, *move.Tile);
             }
+            else if (move.Result == MoveResult::NewRoom) {
+                Game->MoveRoom(Direction::North);
+            }
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
@@ -82,6 +85,9 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile);
+            }
+            else if (move.Result == MoveResult::NewRoom) {
+                Game->MoveRoom(Direction::South);
             }
 
         }
@@ -94,6 +100,9 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             {
                 Game->Place(*Game->Hero, *move.Tile);
             }
+            else if (move.Result == MoveResult::NewRoom) {
+                Game->MoveRoom(Direction::West);
+            }
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
@@ -103,6 +112,9 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile);
+            }
+            else if (move.Result == MoveResult::NewRoom) {
+                Game->MoveRoom(Direction::East);
             }
         }
 

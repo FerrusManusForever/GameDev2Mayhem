@@ -5,6 +5,9 @@ DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 {
 	this->tileSizeX = tileSizeX;
 	this->tileSizeY = tileSizeY;
+	this->currentRoomX = 0;
+	this->currentRoomY = 0;
+
 	RandomizeLayout();
 }
 
@@ -175,12 +178,57 @@ void DungeonGame::Place(GameCharacter& who, Tile& tile)
 	who.CurrentTile = &tile;
 }
 
+void DungeonGame::MoveRoom(Direction dir)
+{
+	bool doChange = false;
+	int tileX = this->Hero->CurrentTile->XCoord;
+	int tileY = this->Hero->CurrentTile->YCoord;
+
+	if (dir == Direction::North && currentRoomY > 0) {
+		currentRoomY--;
+		doChange = true;
+		tileY = RoomSize - 1;
+	}
+	else if (dir == Direction::South && currentRoomY < NumRooms - 1) 
+	{
+		currentRoomY++;
+		doChange = true;
+		tileY = 0;
+	}
+	else if (dir == Direction::East && currentRoomX < NumRooms - 1) 
+	{
+		currentRoomX++;
+		doChange = true;
+		tileX = 0;
+	}
+	else if (dir == Direction::West && currentRoomX > 0) 
+	{
+		currentRoomX--;
+		doChange = true;
+		tileX = RoomSize - 1;
+	}
+
+	if (doChange) {
+		UnloadRoom();
+		LoadRoom(currentRoomX, currentRoomY);
+
+		// Reset the player's position
+		this->Place(*this->Hero, this->Tiles[tileX][tileY]);
+	}
+
+}
+
 
 void DungeonGame::LoadRoom(int x, int y)
 {
 	int roomIndex = RoomLayouts[x][y];
 	std::string path = roomFiles[roomIndex];
 	LoadRoom(path);
+}
+
+void DungeonGame::UnloadRoom()
+{
+
 }
 
 

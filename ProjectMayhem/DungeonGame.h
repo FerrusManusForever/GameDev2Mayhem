@@ -51,6 +51,7 @@ public:
 	~DungeonGame();	
 	void LoadTextures(SDL_Renderer* renderer);
 	void LoadRoom(int x, int y);
+	void UnloadRoom();
 	Player* Hero;
 	Tile Tiles[RoomSize][RoomSize];
 	int RoomLayouts[NumRooms][NumRooms];
@@ -61,12 +62,15 @@ public:
 	void LinkTiles();
 	MoveContext TryMove(GameCharacter* whoMove, Tile* tile, Direction dir);
 	void Place(GameCharacter& who, Tile& tile);
+	void MoveRoom(Direction dir);
 
 private:
 	float tileSizeX;
 	float tileSizeY;
 	void RandomizeLayout();
 	void LoadRoom(std::string file);	
+	int currentRoomX;
+	int currentRoomY;
 
 };
 
