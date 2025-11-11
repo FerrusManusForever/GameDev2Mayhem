@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\CLibs\SDL3-3.2.16\include;C:\CLibs\SDL3_image-3.2.4\include;C:\GitRepos\CLibs\SDL3-3.2.16\include;C:\GitRepos\CLibs\SDL3_image-3.2.4\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\CLibs\SDL3-3.2.16\lib\x64;C:\CLibs\SDL3_image-3.2.4\lib\x64;C:\GitRepos\CLibs\SDL3-3.2.16\lib\x64;C:\GitRepos\CLibs\SDL3_image-3.2.4\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\CLibs\SDL3-3.2.16\include;C:\CLibs\SDL3_image-3.2.4\include;C:\GitRepos\CLibs\SDL3-3.2.16\include;C:\GitRepos\CLibs\SDL3_image-3.2.4\include;D:\Downloads\SDL3\SDL3-devel-3.2.16-VC\SDL3-3.2.16\include;D:\Downloads\SDL3\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\CLibs\SDL3-3.2.16\lib\x64;C:\CLibs\SDL3_image-3.2.4\lib\x64;C:\GitRepos\CLibs\SDL3-3.2.16\lib\x64;C:\GitRepos\CLibs\SDL3_image-3.2.4\lib\x64;D:\Downloads\SDL3\SDL3-devel-3.2.16-VC\SDL3-3.2.16\lib\x64;D:\Downloads\SDL3\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -22,11 +22,11 @@ Tile* DungeonGame::GetNeighbour(Tile* origin, Direction dir)
 	{
 		return &this->Tiles[x][y - 1];
 	}
-	if (dir == South && y < RoomSize - 2)
+	if (dir == South && y < RoomSize - 1)
 	{
 		return &this->Tiles[x][y + 1];
 	}
-	if (dir == East && x < RoomSize - 2)
+	if (dir == East && x < RoomSize - 1)
 	{
 		return &this->Tiles[x + 1][y];
 	}
@@ -166,10 +166,13 @@ MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction d
 // Shifts a character a tile.
 void DungeonGame::Place(GameCharacter& who, Tile& tile)
 {
-	tile.Resident = nullptr;
-	who.CurrentTile = &tile;
-	who.Rect = tile.Rect;
+	if (who.CurrentTile != nullptr) {
+		who.CurrentTile->Resident = nullptr;
+	}
+	
 	tile.Resident = &who;
+	who.Rect = tile.Rect;
+	who.CurrentTile = &tile;
 }
 
 

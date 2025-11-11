@@ -9,9 +9,9 @@ enum Direction
 
 enum MoveResult
 {
-	OK,
-	Blocked,
-	Combat,
-	NewRoom,
+	OK = 0,
+	Blocked = 1,
+	Combat = 2,
+	NewRoom = 3
 };
 

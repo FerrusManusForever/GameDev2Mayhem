@@ -68,6 +68,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.y -= tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::North);
+            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile);
@@ -77,6 +78,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.y += tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::South);
+            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile);
@@ -87,6 +89,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.x -= tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::West);
+            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile);
@@ -96,6 +99,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.x += tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::East);
+            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile);
