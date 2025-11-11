@@ -29,26 +29,41 @@ const static std::string path_Check[] = {
 										"Sprites/Tile_checker_blood.bmp",
 										"Sprites/Tile_checker_bones_1.bmp",
 										"Sprites/Tile_checker_crack_1.bmp"
+
+};
+
+const static std::string roomFiles[5] = {
+										"Data/Rooms/Room01.bmp",
+										"Data/Rooms/Room02.bmp",
+										"Data/Rooms/Room03.bmp",
+										"Data/Rooms/Room04.bmp",
+										"Data/Rooms/Room05.bmp"											
 };
 
 const static int RoomSize = 10;
+const static int NumRooms = 10;
 
 class DungeonGame
 {
 public:
 	DungeonGame(float tileSizeX, float tileSizeY);
-	~DungeonGame();
+	~DungeonGame();	
 	void LoadTextures(SDL_Renderer* renderer);
-	void LoadRoom(const char* file);
+	void LoadRoom(int x, int y);
 	Player* Hero;
 	Tile Tiles[RoomSize][RoomSize];
+	int RoomLayouts[NumRooms][NumRooms];
 	SDL_Texture* CarpetTextures[3];
 	SDL_Texture* GreyTextures[7];
 	SDL_Texture* CheckTextures[4];
+	Tile* GetNeighbour(Tile* origin, Direction dir);
+	void LinkTiles();
 
 private:
 	float tileSizeX;
 	float tileSizeY;
+	void RandomizeLayout();
+	void LoadRoom(std::string file);	
 
 };
 

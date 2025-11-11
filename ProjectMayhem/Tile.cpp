@@ -11,6 +11,11 @@ bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 void Tile::Configure(SDL_Color& color, float x, float y, float size,
 	SDL_Texture* tilesetA[],SDL_Texture* tilesetB[],SDL_Texture* tilesetC[])
 {
+
+	XCoord = (int)x;
+	YCoord = (int)y;
+
+
 	SDL_Color black = { 0, 0, 0, 255 };
 	SDL_Color red = { 255, 0, 0, 255 };
 	SDL_Color green = { 0, 255, 0, 255 };

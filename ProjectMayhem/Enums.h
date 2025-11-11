@@ -7,3 +7,11 @@ enum Direction
 	West
 };
 
+enum MoveResult
+{
+	OK,
+	Blocked,
+	Combat,
+	NewRoom,
+};
+

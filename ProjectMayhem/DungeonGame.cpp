@@ -1,14 +1,52 @@
 #include "DungeonGame.h"
+#include <random>
 
 DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 {
 	this->tileSizeX = tileSizeX;
 	this->tileSizeY = tileSizeY;
+	RandomizeLayout();
 }
 
 DungeonGame::~DungeonGame()
 {
 	delete Hero;
+}
+
+Tile* DungeonGame::GetNeighbour(Tile* origin, Direction dir)
+{
+	int x = origin->XCoord;
+	int y = origin->YCoord;
+
+	if (dir == North && y > 0)
+	{
+		return &this->Tiles[x][y - 1];
+	}
+	if (dir == South && y < RoomSize - 1)
+	{
+		return &this->Tiles[x][y + 1];
+	}
+	if (dir == East && x < RoomSize - 1)
+	{
+		return &this->Tiles[x + 1][y];
+	}
+	if (dir == West && x > 0)
+	{
+		return &this->Tiles[x - 1][y];
+	}
+
+	return nullptr;
+}
+
+void DungeonGame::RandomizeLayout()
+{
+	for (int x = 0; x < NumRooms; x++)
+	{
+		for (int y = 0; y < NumRooms; y++)
+		{
+			RoomLayouts[x][y] = rand() % 5;
+		}
+	}
 }
 
 void DungeonGame::LoadTextures(SDL_Renderer* renderer)
@@ -49,9 +87,9 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 
 }
 
-void DungeonGame::LoadRoom(const char* filename)
+void DungeonGame::LoadRoom(std::string fileName)
 {
-	SDL_Surface* surface = SDL_LoadBMP(filename);
+	SDL_Surface* surface = SDL_LoadBMP(fileName.c_str());
 
 	const SDL_PixelFormatDetails* pixelDetails = SDL_GetPixelFormatDetails(surface->format);
 	const Uint8 bpp = SDL_BYTESPERPIXEL(surface->format);
@@ -66,8 +104,32 @@ void DungeonGame::LoadRoom(const char* filename)
 
 			// now configure the tile at x,y with col
 			this->Tiles[x][y].Configure(col, x, y, tileSizeX, this->CarpetTextures, this->GreyTextures, this->CheckTextures);
+		}
+	}
+}
 
+void DungeonGame::LinkTiles()
+{
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			this->Tiles[x][y].NeighbourNorth = GetNeighbour(&Tiles[x][y], Direction::North);
+			this->Tiles[x][y].NeighbourSouth = GetNeighbour(&Tiles[x][y], Direction::South);
+			this->Tiles[x][y].NeighbourEast = GetNeighbour(&Tiles[x][y], Direction::East);
+			this->Tiles[x][y].NeighbourWest = GetNeighbour(&Tiles[x][y], Direction::West);
 		}
 	}
 
 }
+
+
+void DungeonGame::LoadRoom(int x, int y)
+{
+	int roomIndex = RoomLayouts[x][y];
+	std::string path = roomFiles[roomIndex];
+	LoadRoom(path);
+}
+
+
+
