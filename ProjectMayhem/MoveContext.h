@@ -7,7 +7,7 @@ class MoveContext
 {
 public:
 	Tile* Tile;
-	GameCharacter* Blocker;
+	GameCharacter* Character;
 	MoveResult Result;
 	Direction Direction;
 };

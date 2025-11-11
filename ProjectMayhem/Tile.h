@@ -1,5 +1,9 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include "Enums.h"
+
+class GameCharacter;
+
 class Tile
 {
 	static bool CompareColours(SDL_Color& col1, SDL_Color& col2);
@@ -14,6 +18,8 @@ public:
 	Tile* NeighbourSouth;
 	Tile* NeighbourEast;
 	Tile* NeighbourWest;
+	Tile* GetNeighbour(Direction dir);
+	GameCharacter* Resident;
 
 private:
 

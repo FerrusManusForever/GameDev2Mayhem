@@ -22,11 +22,11 @@ Tile* DungeonGame::GetNeighbour(Tile* origin, Direction dir)
 	{
 		return &this->Tiles[x][y - 1];
 	}
-	if (dir == South && y < RoomSize - 1)
+	if (dir == South && y < RoomSize - 2)
 	{
 		return &this->Tiles[x][y + 1];
 	}
-	if (dir == East && x < RoomSize - 1)
+	if (dir == East && x < RoomSize - 2)
 	{
 		return &this->Tiles[x + 1][y];
 	}
@@ -121,6 +121,55 @@ void DungeonGame::LinkTiles()
 		}
 	}
 
+}
+
+MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction dir)
+{
+	MoveContext result;
+	result.Direction = dir;
+
+	Tile* neighbour = tile->GetNeighbour(dir);
+	if (neighbour != nullptr)
+	{
+		result.Tile = neighbour;
+
+		// there is a tile in that direction
+		if (neighbour->Walkable == false)
+		{
+			result.Result = MoveResult::Blocked;
+		}
+		else
+		{
+			// walkable tile, check for a resident character
+			if (neighbour->Resident != nullptr)
+			{
+				result.Result = MoveResult::Combat;
+				result.Character = neighbour->Resident;
+			}
+			else
+			{
+				// No resident, OK to move to the tile
+				result.Result = MoveResult::OK;
+			}
+		}
+	}
+	else
+	{
+		// no neighbour in that direction, try to load a new room
+		result.Result = MoveResult::NewRoom;
+	}
+	
+
+	return result;
+}
+
+// Shifts a character a tile.
+void DungeonGame::Place(GameCharacter& who, Tile& tile)
+{
+	tile.Resident = nullptr;
+	who.CurrentTile = &tile;
+	who.Rect = tile.Rect;
+	tile.Resident = &who;
 }
 
 

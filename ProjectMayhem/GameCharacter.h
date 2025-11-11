@@ -2,7 +2,8 @@
 #include "Enums.h"
 #include "Pickup.h"
 #include <SDL3/SDL.h>
-#include "MoveContext.h"
+
+class Tile;
 
 class GameCharacter
 {
@@ -11,8 +12,8 @@ public:
 	~GameCharacter();
 	void CollectPickup(Pickup& pickup);
 	void Attack(GameCharacter& target);
-	MoveContext TryMove(Tile* fromTile, Direction direction);
 
+	Tile* CurrentTile;
 	SDL_Texture* Texture;
 	SDL_FRect Rect;
 private:

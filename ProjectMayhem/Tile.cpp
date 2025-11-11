@@ -1,6 +1,7 @@
 #include "Tile.h"
 #include <random>
 #include <iostream>
+#include "Enums.h"
 bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 {
 	return col1.r == col2.r &&
@@ -91,4 +92,26 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size,
 
 	
 
+}
+
+Tile* Tile::GetNeighbour(Direction dir)
+{
+	if (dir == Direction::North)
+	{
+		return NeighbourNorth;
+	}
+	if (dir == Direction::South)
+	{
+		return NeighbourSouth;
+	}
+	if (dir == Direction::East)
+	{
+		return NeighbourEast;
+	}
+	if (dir == Direction::West)
+	{
+		return NeighbourWest;
+	}
+
+	return nullptr;
 }

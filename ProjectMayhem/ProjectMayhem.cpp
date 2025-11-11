@@ -5,7 +5,7 @@
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
 #include "DungeonGame.h"
-
+#include "MoveContext.h"
 using namespace std;
 
 const int resX = 1920;
@@ -43,10 +43,12 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 
     Game = new DungeonGame(tileSize, tileSize);
     Game->LoadTextures(renderer);
-    Game->LinkTiles();
+    
     //const char* room = "Data/Rooms/Room01.bmp";
     //Game->LoadRoom(room);
     Game->LoadRoom(0, 0);
+    Game->LinkTiles();
+    Game->Place(*Game->Hero, Game->Tiles[1][1]);
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -64,19 +66,40 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-            Game->Hero->Rect.y -= tileSize;
+            //Game->Hero->Rect.y -= tileSize;
+            MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::North);
+            if (move.Result == MoveResult::OK)
+            {
+                Game->Place(*Game->Hero, *move.Tile);
+            }
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-            Game->Hero->Rect.y += tileSize;
+            //Game->Hero->Rect.y += tileSize;
+            MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::South);
+            if (move.Result == MoveResult::OK)
+            {
+                Game->Place(*Game->Hero, *move.Tile);
+            }
+
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            Game->Hero->Rect.x -= tileSize;
+            //Game->Hero->Rect.x -= tileSize;
+            MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::West);
+            if (move.Result == MoveResult::OK)
+            {
+                Game->Place(*Game->Hero, *move.Tile);
+            }
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            Game->Hero->Rect.x += tileSize;
+            //Game->Hero->Rect.x += tileSize;
+            MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::East);
+            if (move.Result == MoveResult::OK)
+            {
+                Game->Place(*Game->Hero, *move.Tile);
+            }
         }
 
     }
@@ -93,10 +116,6 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_SetRenderDrawColor(renderer, 33, 33, 33, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */
     SDL_RenderClear(renderer);  /* start with a blank canvas. */
 
-    // Your Update code goes here.
-
-    //SDL_RenderTexture(renderer, Game->texHero, NULL, &Game->RectHero);
-   
 
     // draw the grid
     for (int x = 0; x < 10; x++)
@@ -106,13 +125,14 @@ SDL_AppResult SDL_AppIterate(void* appstate)
             if (Game->Tiles[x][y].Walkable)
             {
                 SDL_RenderTexture(renderer, Game->Tiles[x][y].Texture, NULL, &Game->Tiles[x][y].Rect);
-            }
-            
+            }            
         }
     }
 
-
+    // Draw the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
+
+    // Draw enemies and pickups
 
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 

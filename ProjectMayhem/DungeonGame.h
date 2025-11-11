@@ -6,6 +6,7 @@
 #include "GameCharacter.h"
 #include "Player.h"
 #include "Tile.h"
+#include "MoveContext.h"
 const static std::string path_Hero = "Sprites/Hero_Sword.png";
 const static std::string path_Carpet[] = {
 										"Sprites/Tile_carpet_base.bmp" ,
@@ -58,6 +59,8 @@ public:
 	SDL_Texture* CheckTextures[4];
 	Tile* GetNeighbour(Tile* origin, Direction dir);
 	void LinkTiles();
+	MoveContext TryMove(GameCharacter* whoMove, Tile* tile, Direction dir);
+	void Place(GameCharacter& who, Tile& tile);
 
 private:
 	float tileSizeX;
