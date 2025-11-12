@@ -6,6 +6,7 @@
 #include <iostream>
 #include "DungeonGame.h"
 #include "MoveContext.h"
+#include <cmath>
 using namespace std;
 
 const int resX = 1920;
@@ -27,6 +28,8 @@ static DungeonGame* Game;
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
+     
+
     SDL_SetAppMetadata(ProjectName, "1.0", "");
 
     if (!SDL_Init(SDL_INIT_VIDEO))
@@ -48,7 +51,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     //Game->LoadRoom(room);
     Game->LoadRoom(0, 0);
     Game->LinkTiles();
-    Game->Place(*Game->Hero, Game->Tiles[1][1]);
+    Game->Place(*Game->Hero, Game->Tiles[1][1], true);
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -71,7 +74,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
-                Game->Place(*Game->Hero, *move.Tile);
+                Game->Place(*Game->Hero, *move.Tile, false);
             }
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::North);
@@ -84,7 +87,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
-                Game->Place(*Game->Hero, *move.Tile);
+                Game->Place(*Game->Hero, *move.Tile, false);
             }
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::South);
@@ -98,7 +101,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
-                Game->Place(*Game->Hero, *move.Tile);
+                Game->Place(*Game->Hero, *move.Tile, false);
             }
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::West);
@@ -111,7 +114,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
-                Game->Place(*Game->Hero, *move.Tile);
+                Game->Place(*Game->Hero, *move.Tile, false);
             }
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::East);
@@ -129,7 +132,6 @@ float RandomFloat(float min, float max)
     float random = ((float)rand()) / (float)RAND_MAX;
     float range = max - min;
     return (random * range) + min;
-
 }
 
 
@@ -141,6 +143,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_SetRenderDrawColor(renderer, 33, 33, 33, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */
     SDL_RenderClear(renderer);  /* start with a blank canvas. */
 
+    
 
     // draw the grid
     for (int x = 0; x < 10; x++)
@@ -166,8 +169,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     // Draw the hero
     //Game->Hero->Rect = Game->Hero->CurrentTile->Rect;
+    Game->Hero->UpdateVisual(0.001);
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
-
+    
     // Draw enemies and pickups
 
     SDL_RenderPresent(renderer);  /* put it all on the screen! */

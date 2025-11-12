@@ -63,7 +63,7 @@ public:
 	Tile* GetNeighbour(Tile* origin, Direction dir);
 	void LinkTiles();
 	MoveContext TryMove(GameCharacter* whoMove, Tile* tile, Direction dir);
-	void Place(GameCharacter& who, Tile& tile);
+	void Place(GameCharacter& who, Tile& tile, bool immediate);
 	void MoveRoom(Direction dir);
 
 private:

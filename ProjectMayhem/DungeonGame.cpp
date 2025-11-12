@@ -168,14 +168,22 @@ MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction d
 }
 
 // Shifts a character a tile.
-void DungeonGame::Place(GameCharacter& who, Tile& tile)
+void DungeonGame::Place(GameCharacter& who, Tile& tile, bool immediate)
 {
 	if (who.CurrentTile != nullptr) {
 		who.CurrentTile->Resident = nullptr;
 	}
 	
 	tile.Resident = &who;
-	who.Rect = tile.Rect;
+	if (immediate)
+	{
+		who.SetRect(tile.Rect);		
+	}
+	else
+	{
+		who.StartLerping(tile.Rect.x, tile.Rect.y);
+	}
+	
 	who.CurrentTile = &tile;
 }
 
@@ -214,7 +222,7 @@ void DungeonGame::MoveRoom(Direction dir)
 		LoadRoom(currentRoomX, currentRoomY);
 
 		// Reset the player's position
-		this->Place(*this->Hero, this->Tiles[tileX][tileY]);
+		this->Place(*this->Hero, this->Tiles[tileX][tileY], true);
 	}
 
 }
