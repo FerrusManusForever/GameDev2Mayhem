@@ -10,6 +10,9 @@
 #include <algorithm>
 using namespace std;
 
+#define USE_LIGHTING 0;
+#define USE_WOBBLE 0;
+
 const int resX = 1920;
 const int resY = 1080;
 const int GridSizeX = 10;
@@ -25,11 +28,12 @@ static SDL_Renderer* renderer = NULL;
 static const char* ProjectName = "JMC Starter Project";
 
 static DungeonGame* Game;
+static const SDL_Color lightStart = { 255, 226.0, 148.0, 255 };
+static const SDL_Color lightEnd = { 16.0, 1.00, 89.0, 255 };
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
-{
-     
+{     
 
     SDL_SetAppMetadata(ProjectName, "1.0", "");
 
@@ -72,7 +76,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.y -= tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::North);
-            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile, false);
@@ -85,7 +88,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.y += tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::South);
-            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile, false);
@@ -99,7 +101,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.x -= tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::West);
-            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile, false);
@@ -112,7 +113,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             //Game->Hero->Rect.x += tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::East);
-            std::cout << move.Result << std::endl;
             if (move.Result == MoveResult::OK)
             {
                 Game->Place(*Game->Hero, *move.Tile, false);
@@ -121,7 +121,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
                 Game->MoveRoom(Direction::East);
             }
         }
-
     }
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
@@ -153,7 +152,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         {
             if (Game->Tiles[x][y].Walkable)
             {
-                /*
+#if USE_WOBBLE == 1
                 float min = -0.1;
                 float max = 0.1;
 
@@ -161,21 +160,49 @@ SDL_AppResult SDL_AppIterate(void* appstate)
                 Game->Tiles[x][y].Rect.h += RandomFloat(-0.1, 0.1);
                 Game->Tiles[x][y].Rect.x += RandomFloat(-0.1, 0.1);
                 Game->Tiles[x][y].Rect.y += RandomFloat(-0.1, 0.1);
-                
-                */
-                
-    
+
+#endif // USE_WOBBLE
+
+#if USE_LIGHTING == 1
                 int dist = Tile::GetDistance(*Game->Hero->CurrentTile, Game->Tiles[x][y]);
                 int maxDist = 7;
                 float d = std::clamp(dist / (float)maxDist, 0.0f, 1.0f);
                 float factor = 1.0f - d;
                 factor *= factor;
                 int brightness = static_cast<int>(255 * factor);
-       
-                
-               
 
-                SDL_SetTextureColorMod(Game->Tiles[x][y].Texture, brightness, brightness, brightness);
+
+                // linearize colour
+                float lR1 = std::powf(lightStart.r / 255.0, 2.2);
+                float lB1 = std::powf(lightStart.b / 255.0, 2.2);
+                float lG1 = std::powf(lightStart.g / 255.0, 2.2);
+                float lR2 = std::powf(lightEnd.r / 255.0, 2.2);
+                float lB2 = std::powf(lightEnd.b / 255.0, 2.2);
+                float lG2 = std::powf(lightEnd.g / 255.0, 2.2);
+
+
+                // lerp colour       
+                float t = std::clamp(1.0 - (brightness / 255.0), 0.0, 1.0);
+                float r = std::lerp(lR1, lR2, t);
+                float g = std::lerp(lG1, lG2, t);
+                float b = std::lerp(lB1, lB2, t);
+
+                // convert back to rgb
+                float rR = std::powf(r, 1.0 / 2.2) * 255.0;
+                float rG = std::powf(g, 1.0 / 2.2) * 255.0;
+                float rB = std::powf(b, 1.0 / 2.2) * 255.0;
+
+                SDL_SetTextureColorMod(Game->Tiles[x][y].Texture, rR, rG, rB);
+#endif
+
+
+               
+                
+                
+                
+                
+                
+                
 
                 SDL_RenderTexture(renderer, Game->Tiles[x][y].Texture, NULL, &Game->Tiles[x][y].Rect);
             }            
