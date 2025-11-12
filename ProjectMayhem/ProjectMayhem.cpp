@@ -10,8 +10,9 @@
 #include <algorithm>
 using namespace std;
 
-#define USE_LIGHTING 1;
+#define USE_LIGHTING 0;
 #define USE_WOBBLE 0;
+
 
 const int resX = 1920;
 const int resY = 1080;
@@ -169,6 +170,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
                 factor *= factor;
                 int brightness = static_cast<int>(255 * factor);
 
+                float time = SDL_GetTicks() / 1000.0;
+                float speed = 4.0;
+                float flicker = brightness * (1.0 + std::sinf(time * speed) * 0.33);
+
                 // linearize colour
                 float lR1 = std::powf(lightStart.r / 255.0, 2.2);
                 float lB1 = std::powf(lightStart.b / 255.0, 2.2);
@@ -178,7 +183,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
                 float lG2 = std::powf(lightEnd.g / 255.0, 2.2);
 
                 // lerp colour       
-                float t = std::clamp(1.0 - (brightness / 255.0), 0.0, 1.0);
+                float t = std::clamp(1.0 - (flicker / 255.0), 0.0, 1.0);
                 float r = std::lerp(lR1, lR2, t);
                 float g = std::lerp(lG1, lG2, t);
                 float b = std::lerp(lB1, lB2, t);
