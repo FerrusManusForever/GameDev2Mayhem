@@ -20,8 +20,12 @@ public:
 	Tile* NeighbourWest;
 	Tile* GetNeighbour(Direction dir);
 	GameCharacter* Resident;
+	static int GetDistance(Tile& t1, Tile& t2);
 
 private:
+
+	
+
 
 };
 

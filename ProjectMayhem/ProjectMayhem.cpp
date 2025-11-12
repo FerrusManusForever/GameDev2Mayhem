@@ -7,6 +7,7 @@
 #include "DungeonGame.h"
 #include "MoveContext.h"
 #include <cmath>
+#include <algorithm>
 using namespace std;
 
 const int resX = 1920;
@@ -140,7 +141,7 @@ float RandomFloat(float min, float max)
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
     /* as you can see from this, rendering draws over whatever was drawn before it. */
-    SDL_SetRenderDrawColor(renderer, 33, 33, 33, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */
     SDL_RenderClear(renderer);  /* start with a blank canvas. */
 
     
@@ -160,7 +161,21 @@ SDL_AppResult SDL_AppIterate(void* appstate)
                 Game->Tiles[x][y].Rect.h += RandomFloat(-0.1, 0.1);
                 Game->Tiles[x][y].Rect.x += RandomFloat(-0.1, 0.1);
                 Game->Tiles[x][y].Rect.y += RandomFloat(-0.1, 0.1);
+                
                 */
+                
+    
+                int dist = Tile::GetDistance(*Game->Hero->CurrentTile, Game->Tiles[x][y]);
+                int maxDist = 7;
+                float d = std::clamp(dist / (float)maxDist, 0.0f, 1.0f);
+                float factor = 1.0f - d;
+                factor *= factor;
+                int brightness = static_cast<int>(255 * factor);
+       
+                
+               
+
+                SDL_SetTextureColorMod(Game->Tiles[x][y].Texture, brightness, brightness, brightness);
 
                 SDL_RenderTexture(renderer, Game->Tiles[x][y].Texture, NULL, &Game->Tiles[x][y].Rect);
             }            

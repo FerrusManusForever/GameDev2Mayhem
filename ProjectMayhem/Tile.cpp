@@ -2,6 +2,7 @@
 #include <random>
 #include <iostream>
 #include "Enums.h"
+#include <cmath>
 bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 {
 	return col1.r == col2.r &&
@@ -114,4 +115,12 @@ Tile* Tile::GetNeighbour(Direction dir)
 	}
 
 	return nullptr;
+}
+
+int Tile::GetDistance(Tile& t1, Tile& t2)
+{
+	int dX = std::abs(t1.XCoord - t2.XCoord);
+	int dY = std::abs(t1.YCoord - t2.YCoord);
+
+	return dX + dY;
 }
