@@ -47,9 +47,10 @@ void DungeonGame::RandomizeLayout()
 	{
 		for (int y = 0; y < NumRooms; y++)
 		{
-			RoomLayouts[x][y] = rand() % 5;
+			RoomLayouts[x][y] = rand() % 7;
 		}
 	}
+	RoomLayouts[0][0] = 0;
 }
 
 void DungeonGame::LoadTextures(SDL_Renderer* renderer)

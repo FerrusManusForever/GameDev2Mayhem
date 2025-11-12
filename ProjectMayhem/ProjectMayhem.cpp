@@ -124,6 +124,15 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
 }
 
+float RandomFloat(float min, float max)
+{
+    float random = ((float)rand()) / (float)RAND_MAX;
+    float range = max - min;
+    return (random * range) + min;
+
+}
+
+
 /*  This function runs once per frame, and is the heart of the program.
     Think of this like Unity's Update() loop */
 SDL_AppResult SDL_AppIterate(void* appstate)
@@ -140,12 +149,23 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         {
             if (Game->Tiles[x][y].Walkable)
             {
+                /*
+                float min = -0.1;
+                float max = 0.1;
+
+                Game->Tiles[x][y].Rect.w += RandomFloat(-0.1, 0.1);
+                Game->Tiles[x][y].Rect.h += RandomFloat(-0.1, 0.1);
+                Game->Tiles[x][y].Rect.x += RandomFloat(-0.1, 0.1);
+                Game->Tiles[x][y].Rect.y += RandomFloat(-0.1, 0.1);
+                */
+
                 SDL_RenderTexture(renderer, Game->Tiles[x][y].Texture, NULL, &Game->Tiles[x][y].Rect);
             }            
         }
     }
 
     // Draw the hero
+    //Game->Hero->Rect = Game->Hero->CurrentTile->Rect;
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
 
     // Draw enemies and pickups

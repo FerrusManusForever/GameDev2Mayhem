@@ -33,12 +33,14 @@ const static std::string path_Check[] = {
 
 };
 
-const static std::string roomFiles[5] = {
+const static std::string roomFiles[7] = {
 										"Data/Rooms/Room01.bmp",
 										"Data/Rooms/Room02.bmp",
 										"Data/Rooms/Room03.bmp",
 										"Data/Rooms/Room04.bmp",
-										"Data/Rooms/Room05.bmp"											
+										"Data/Rooms/Room05.bmp",
+										"Data/Rooms/Room06.bmp",
+										"Data/Rooms/Room07.bmp"	
 };
 
 const static int RoomSize = 10;
