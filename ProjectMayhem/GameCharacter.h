@@ -20,6 +20,7 @@ public:
 	SDL_FRect Rect;
 	double lerpTimer;
 	double LerpInterval;
+	void Update(double dt);
 private:
 	float lerpFromX;
 	float lerpFromY;

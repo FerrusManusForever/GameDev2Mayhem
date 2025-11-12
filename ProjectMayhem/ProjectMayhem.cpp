@@ -10,7 +10,7 @@
 #include <algorithm>
 using namespace std;
 
-#define USE_LIGHTING 0;
+#define USE_LIGHTING 1;
 #define USE_WOBBLE 0;
 
 const int resX = 1920;
@@ -141,9 +141,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 {
     /* as you can see from this, rendering draws over whatever was drawn before it. */
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */
-    SDL_RenderClear(renderer);  /* start with a blank canvas. */
-
-    
+    SDL_RenderClear(renderer);  /* start with a blank canvas. */    
 
     // draw the grid
     for (int x = 0; x < 10; x++)
@@ -171,7 +169,6 @@ SDL_AppResult SDL_AppIterate(void* appstate)
                 factor *= factor;
                 int brightness = static_cast<int>(255 * factor);
 
-
                 // linearize colour
                 float lR1 = std::powf(lightStart.r / 255.0, 2.2);
                 float lB1 = std::powf(lightStart.b / 255.0, 2.2);
@@ -179,7 +176,6 @@ SDL_AppResult SDL_AppIterate(void* appstate)
                 float lR2 = std::powf(lightEnd.r / 255.0, 2.2);
                 float lB2 = std::powf(lightEnd.b / 255.0, 2.2);
                 float lG2 = std::powf(lightEnd.g / 255.0, 2.2);
-
 
                 // lerp colour       
                 float t = std::clamp(1.0 - (brightness / 255.0), 0.0, 1.0);
@@ -194,28 +190,18 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
                 SDL_SetTextureColorMod(Game->Tiles[x][y].Texture, rR, rG, rB);
 #endif
-
-
-               
-                
-                
-                
-                
-                
-                
-
+   
+                // Draw each tile
                 SDL_RenderTexture(renderer, Game->Tiles[x][y].Texture, NULL, &Game->Tiles[x][y].Rect);
             }            
         }
     }
 
     // Draw the hero
-    //Game->Hero->Rect = Game->Hero->CurrentTile->Rect;
-    Game->Hero->UpdateVisual(0.001);
+    Game->Hero->Update(0.001);
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
     
     // Draw enemies and pickups
-
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */

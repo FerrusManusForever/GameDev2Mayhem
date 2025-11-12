@@ -56,6 +56,11 @@ void GameCharacter::SetRect(SDL_FRect& rect)
 	lerpTimer = LerpInterval;
 }
 
+void GameCharacter::Update(double dt)
+{
+	UpdateVisual(dt);
+}
+
 
 
 
