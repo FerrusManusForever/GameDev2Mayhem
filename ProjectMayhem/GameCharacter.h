@@ -19,7 +19,7 @@ public:
 	SDL_Texture* Texture;
 	SDL_FRect Rect;
 	double lerpTimer;
-	double LerpInterval = 0.2f;
+	double LerpInterval;
 private:
 	float lerpFromX;
 	float lerpFromY;
