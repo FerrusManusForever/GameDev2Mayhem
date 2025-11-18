@@ -15,3 +15,11 @@ enum MoveResult
 	NewRoom = 3
 };
 
+enum Pickup
+{
+	None,
+	Sword,
+	Potion
+};
+
+

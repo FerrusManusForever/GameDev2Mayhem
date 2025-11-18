@@ -9,6 +9,7 @@ class Tile
 	static bool CompareColours(SDL_Color& col1, SDL_Color& col2);
 
 public:
+	Tile();
 	int XCoord, YCoord;
 	bool Walkable;
 	SDL_Texture* Texture;
@@ -21,6 +22,7 @@ public:
 	Tile* GetNeighbour(Direction dir);
 	GameCharacter* Resident;
 	static int GetDistance(Tile& t1, Tile& t2);
+	Pickup Pickup;
 
 private:
 

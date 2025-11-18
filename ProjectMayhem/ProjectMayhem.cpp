@@ -8,6 +8,7 @@
 #include "MoveContext.h"
 #include <cmath>
 #include <algorithm>
+
 using namespace std;
 
 #define USE_LIGHTING 0;
@@ -198,6 +199,13 @@ SDL_AppResult SDL_AppIterate(void* appstate)
    
                 // Draw each tile
                 SDL_RenderTexture(renderer, Game->Tiles[x][y].Texture, NULL, &Game->Tiles[x][y].Rect);
+
+                // Draw pickups
+                if (Game->Tiles[x][y].Pickup != Pickup::None)
+                {
+                    auto pickup = Game->Tiles[x][y].Pickup;
+                    SDL_RenderTexture(renderer, &Game->PickupTextures[pickup], NULL, &Game->Tiles[x][y].Rect);
+                }
             }            
         }
     }
@@ -206,7 +214,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     Game->Hero->Update(0.001);
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
     
-    // Draw enemies and pickups
+    
+    // Draw enemies
+
+
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */

@@ -1,13 +1,21 @@
+#include "Enums.h"
 #include "Tile.h"
 #include <random>
 #include <iostream>
-#include "Enums.h"
 #include <cmath>
+
+
 bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 {
 	return col1.r == col2.r &&
 		col1.b == col2.b &&
 		col1.g == col2.g ;
+}
+
+Tile::Tile()
+{
+	this-> Pickup = Pickup::None;
+
 }
 
 void Tile::Configure(SDL_Color& color, float x, float y, float size,
@@ -76,10 +84,7 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size,
 				int index = rand() % max;
 				this->Texture = tilesetC[index];
 			}
-			
 		}
-
-		
 	}
 
 	//this->Rect = { x * size, y * size, size, size };
@@ -88,10 +93,7 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size,
 	rect.y = y * size;
 	rect.w = size;
 	rect.h = size;
-	this->Rect = rect;
-
-
-	
+	this->Rect = rect;	
 
 }
 

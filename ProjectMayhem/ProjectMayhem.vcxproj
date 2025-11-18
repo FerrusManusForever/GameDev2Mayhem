@@ -139,7 +139,6 @@
     <ClCompile Include="GameCharacter.cpp" />
     <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="MoveContext.cpp" />
-    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ProjectMayhem.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -150,7 +149,6 @@
     <ClInclude Include="GameCharacter.h" />
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="MoveContext.h" />
-    <ClInclude Include="Pickup.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>

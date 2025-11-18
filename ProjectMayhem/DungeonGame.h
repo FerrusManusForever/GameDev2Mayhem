@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include "Enums.h"
 #include <string>
 #include <SDL3/SDL.h>
@@ -8,6 +9,20 @@
 #include "Tile.h"
 #include "MoveContext.h"
 const static std::string path_Hero = "Sprites/Hero_Sword.png";
+const static std::string path_Hero_Unarmed = "Sprites/Hero_no_Sword.png";
+const static std::string path_Goblins[] = { "Sprites/Enemy_orc_purple.png",
+											"Sprites/Enemy_orc_blue.png",
+											"Sprites/Enemy_orc_red.png",
+											"Sprites/Enemy_orc_orange.png"
+
+};
+
+const static std::string path_Pickups[] = {
+										"Sprites/Pickup_Health.png",
+										"Sprites/Pickup_Sword.png"										
+};
+
+
 const static std::string path_Carpet[] = {
 										"Sprites/Tile_carpet_base.bmp" ,
 										"Sprites/Tile_carpet_blood_1.bmp",
@@ -60,6 +75,10 @@ public:
 	SDL_Texture* CarpetTextures[3];
 	SDL_Texture* GreyTextures[7];
 	SDL_Texture* CheckTextures[4];
+	SDL_Texture* GoblinTextures[4];
+	std::map<Pickup, SDL_Texture> PickupTextures;
+
+
 	Tile* GetNeighbour(Tile* origin, Direction dir);
 	void LinkTiles();
 	MoveContext TryMove(GameCharacter* whoMove, Tile* tile, Direction dir);
@@ -73,6 +92,10 @@ private:
 	void LoadRoom(std::string file);	
 	int currentRoomX;
 	int currentRoomY;
+	void SpawnGoblins();
+	void SpawnPickups();
+	void ClearGoblins();
+	void ClearPickups();
 
 };
 

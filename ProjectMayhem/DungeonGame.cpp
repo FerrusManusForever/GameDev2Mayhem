@@ -1,5 +1,7 @@
 #include "DungeonGame.h"
 #include <random>
+#include <vector>
+#include <iostream>
 
 DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 {
@@ -60,6 +62,8 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	// Load all textures
 	this->Hero->Texture = IMG_LoadTexture(renderer, path_Hero.c_str());
 	SDL_SetTextureScaleMode(this->Hero->Texture, SDL_SCALEMODE_NEAREST);
+	this->Hero->UnarmedTexture = IMG_LoadTexture(renderer, path_Hero_Unarmed.c_str());
+	SDL_SetTextureScaleMode(this->Hero->UnarmedTexture, SDL_SCALEMODE_NEAREST);
 
 	this->Hero->Rect.x = 0;
 	this->Hero->Rect.y = 0;
@@ -80,19 +84,33 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 		SDL_SetTextureScaleMode(this->GreyTextures[n], SDL_SCALEMODE_NEAREST);
 	}
 
-
 	// Load check textures
 	for (int n = 0; n < 4; n++)
 	{
 		this->CheckTextures[n] = IMG_LoadTexture(renderer, path_Check[n].c_str());
 		SDL_SetTextureScaleMode(this->CheckTextures[n], SDL_SCALEMODE_NEAREST);
 	}
-	
+
+	// Load pickup textures
+	this->PickupTextures.clear();
+	this->PickupTextures[Pickup::Potion] = *IMG_LoadTexture(renderer, path_Pickups[0].c_str());
+	SDL_SetTextureScaleMode(&this->PickupTextures[Pickup::Potion], SDL_SCALEMODE_NEAREST);
+	this->PickupTextures[Pickup::Sword] = *IMG_LoadTexture(renderer, path_Pickups[1].c_str());
+	SDL_SetTextureScaleMode(&this->PickupTextures[Pickup::Sword], SDL_SCALEMODE_NEAREST);
+
+
+	// Load Goblin textures
+	for (int n = 0; n < 4; n++)
+	{
+		this->GoblinTextures[n] = IMG_LoadTexture(renderer, path_Goblins[n].c_str());
+		SDL_SetTextureScaleMode(this->GoblinTextures[n], SDL_SCALEMODE_NEAREST);
+	}	
 
 }
 
 void DungeonGame::LoadRoom(std::string fileName)
 {
+
 	SDL_Surface* surface = SDL_LoadBMP(fileName.c_str());
 
 	const SDL_PixelFormatDetails* pixelDetails = SDL_GetPixelFormatDetails(surface->format);
@@ -110,6 +128,65 @@ void DungeonGame::LoadRoom(std::string fileName)
 			this->Tiles[x][y].Configure(col, x, y, tileSizeX, this->CarpetTextures, this->GreyTextures, this->CheckTextures);
 		}
 	}
+
+	ClearPickups();
+	ClearGoblins();
+	SpawnPickups();
+	SpawnGoblins();
+}
+
+void DungeonGame::SpawnGoblins()
+{
+}
+
+void DungeonGame::SpawnPickups()
+{	
+	int min = 2;
+	int max = 5;
+	int numPickups = rand() % (max - min + 1) + min;
+
+	std::vector<Tile*> availableTiles;
+	for (int x = 0; x < 10; x++)
+	{
+		for (int y = 0; y < 10; y++)
+		{		
+			if (Tiles[x][y].Walkable && Tiles[x][y].Resident == nullptr)
+			{
+				availableTiles.push_back(&Tiles[x][y]);
+			}
+		}
+	}
+	
+	
+	for (int n = 0; n < numPickups; n++)
+	{
+		int randomIndex = rand() % availableTiles.size();
+
+		if (rand() % 10 <= 2)
+		{
+			availableTiles[randomIndex]->Pickup = Pickup::Sword;
+		}
+		else
+		{
+			availableTiles[randomIndex]->Pickup = Pickup::Potion;
+		}
+		availableTiles.erase(availableTiles.begin() + randomIndex);
+	}
+}
+
+void DungeonGame::ClearGoblins()
+{
+}
+
+void DungeonGame::ClearPickups()
+{
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			this->Tiles[x][y].Pickup = Pickup::None;
+		}
+	}
 }
 
 void DungeonGame::LinkTiles()
@@ -124,7 +201,6 @@ void DungeonGame::LinkTiles()
 			this->Tiles[x][y].NeighbourWest = GetNeighbour(&Tiles[x][y], Direction::West);
 		}
 	}
-
 }
 
 MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction dir)
@@ -161,8 +237,7 @@ MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction d
 	{
 		// no neighbour in that direction, try to load a new room
 		result.Result = MoveResult::NewRoom;
-	}
-	
+	}	
 
 	return result;
 }
@@ -224,7 +299,6 @@ void DungeonGame::MoveRoom(Direction dir)
 		// Reset the player's position
 		this->Place(*this->Hero, this->Tiles[tileX][tileY], true);
 	}
-
 }
 
 
