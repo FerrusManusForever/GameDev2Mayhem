@@ -8,9 +8,14 @@
 #include "Player.h"
 #include "Tile.h"
 #include "MoveContext.h"
+#include <vector>
+#include <list>
+#include "Goblin.h"
 const static std::string path_Hero = "Sprites/Hero_Sword.png";
 const static std::string path_Hero_Unarmed = "Sprites/Hero_no_Sword.png";
-const static std::string path_Goblins[] = { "Sprites/Enemy_orc_purple.png",
+
+const static std::string path_Goblins[] = { 
+											"Sprites/Enemy_orc_purple.png",
 											"Sprites/Enemy_orc_blue.png",
 											"Sprites/Enemy_orc_red.png",
 											"Sprites/Enemy_orc_orange.png"
@@ -76,7 +81,8 @@ public:
 	SDL_Texture* GreyTextures[7];
 	SDL_Texture* CheckTextures[4];
 	SDL_Texture* GoblinTextures[4];
-	std::map<Pickup, SDL_Texture> PickupTextures;
+	std::map<Pickup, SDL_Texture*> PickupTextures;
+	std::list<Goblin*> Goblins;
 
 
 	Tile* GetNeighbour(Tile* origin, Direction dir);
@@ -96,6 +102,7 @@ private:
 	void SpawnPickups();
 	void ClearGoblins();
 	void ClearPickups();
+	std::vector<Tile*> GetEmptyTiles();
 
 };
 

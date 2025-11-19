@@ -55,6 +55,25 @@ void DungeonGame::RandomizeLayout()
 	RoomLayouts[0][0] = 0;
 }
 
+std::vector<Tile*> DungeonGame::GetEmptyTiles()
+{
+	std::vector<Tile*> result;
+	for (int x = 0; x < 10; x++)
+	{
+		for (int y = 0; y < 10; y++)
+		{
+			if (Tiles[x][y].Walkable && Tiles[x][y].Resident == nullptr)
+			{
+				result.push_back(&Tiles[x][y]);
+			}
+		}
+	}
+
+	return result;
+}
+
+
+
 void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 {
 	this->Hero = new Player;
@@ -93,10 +112,10 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 
 	// Load pickup textures
 	this->PickupTextures.clear();
-	this->PickupTextures[Pickup::Potion] = *IMG_LoadTexture(renderer, path_Pickups[0].c_str());
-	SDL_SetTextureScaleMode(&this->PickupTextures[Pickup::Potion], SDL_SCALEMODE_NEAREST);
-	this->PickupTextures[Pickup::Sword] = *IMG_LoadTexture(renderer, path_Pickups[1].c_str());
-	SDL_SetTextureScaleMode(&this->PickupTextures[Pickup::Sword], SDL_SCALEMODE_NEAREST);
+	this->PickupTextures[Pickup::Potion] = IMG_LoadTexture(renderer, path_Pickups[0].c_str());
+	SDL_SetTextureScaleMode(this->PickupTextures[Pickup::Potion], SDL_SCALEMODE_NEAREST);
+	this->PickupTextures[Pickup::Sword] = IMG_LoadTexture(renderer, path_Pickups[1].c_str());
+	SDL_SetTextureScaleMode(this->PickupTextures[Pickup::Sword], SDL_SCALEMODE_NEAREST);
 
 
 	// Load Goblin textures
@@ -137,6 +156,25 @@ void DungeonGame::LoadRoom(std::string fileName)
 
 void DungeonGame::SpawnGoblins()
 {
+	int numGoblins = rand() % 4;
+	auto availableTiles = GetEmptyTiles();
+
+	for (int n = 0; n < numGoblins; n++)
+	{
+		int max = availableTiles.size();
+		int index = rand() % max;
+		auto tile = availableTiles[index];
+
+		int texmax = 4;
+		auto texture = GoblinTextures[rand() % texmax];
+		
+
+		Goblin* g = new Goblin(*this, texture, tile);
+		Goblins.push_back(g);
+		availableTiles.erase(availableTiles.begin() + index);
+	}
+
+
 }
 
 void DungeonGame::SpawnPickups()
@@ -145,18 +183,7 @@ void DungeonGame::SpawnPickups()
 	int max = 5;
 	int numPickups = rand() % (max - min + 1) + min;
 
-	std::vector<Tile*> availableTiles;
-	for (int x = 0; x < 10; x++)
-	{
-		for (int y = 0; y < 10; y++)
-		{		
-			if (Tiles[x][y].Walkable && Tiles[x][y].Resident == nullptr)
-			{
-				availableTiles.push_back(&Tiles[x][y]);
-			}
-		}
-	}
-	
+	auto availableTiles = GetEmptyTiles();	
 	
 	for (int n = 0; n < numPickups; n++)
 	{
@@ -176,6 +203,23 @@ void DungeonGame::SpawnPickups()
 
 void DungeonGame::ClearGoblins()
 {
+	for (int y = 0; y < RoomSize; y++)
+	{
+		for (int x = 0; x < RoomSize; x++)
+		{
+			this->Tiles[x][y].Resident = nullptr;
+		}
+	}
+
+
+	for (auto itr = Goblins.begin(); itr != Goblins.end();)
+	{
+		
+		delete *itr;
+		itr = Goblins.erase(itr);		
+	}
+		
+
 }
 
 void DungeonGame::ClearPickups()
@@ -188,6 +232,8 @@ void DungeonGame::ClearPickups()
 		}
 	}
 }
+
+
 
 void DungeonGame::LinkTiles()
 {
@@ -238,7 +284,7 @@ MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction d
 		// no neighbour in that direction, try to load a new room
 		result.Result = MoveResult::NewRoom;
 	}	
-
+	std::cout << result.Result << std::endl;
 	return result;
 }
 

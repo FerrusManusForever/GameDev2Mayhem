@@ -146,9 +146,11 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderClear(renderer);  /* start with a blank canvas. */    
 
     // draw the grid
-    for (int x = 0; x < 10; x++)
+    //for (int x = 0; x < 10; x++)
+    for(int y = 0; y < 10; y++)
     {
-        for (int y = 0; y < 10; y++)
+        //for (int y = 0; y < 10; y++)
+        for(int x = 0; x < 10; x++)
         {
             if (Game->Tiles[x][y].Walkable)
             {
@@ -204,7 +206,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
                 if (Game->Tiles[x][y].Pickup != Pickup::None)
                 {
                     auto pickup = Game->Tiles[x][y].Pickup;
-                    SDL_RenderTexture(renderer, &Game->PickupTextures[pickup], NULL, &Game->Tiles[x][y].Rect);
+                    SDL_RenderTexture(renderer, Game->PickupTextures[pickup], NULL, &Game->Tiles[x][y].Rect);
                 }
             }            
         }
@@ -216,6 +218,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     
     
     // Draw enemies
+    for (auto goblin : Game->Goblins)
+    {
+        SDL_RenderTexture(renderer, goblin->Texture, NULL, &goblin->Rect);
+    }
 
 
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
