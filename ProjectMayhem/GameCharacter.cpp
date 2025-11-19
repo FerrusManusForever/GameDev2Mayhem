@@ -1,7 +1,7 @@
 #include "GameCharacter.h"
 #include <cmath>
 #include <algorithm>
-
+#include "Tile.h"
 GameCharacter::GameCharacter()
 {
 	lerpTimer = 0;
@@ -13,9 +13,18 @@ GameCharacter::~GameCharacter()
 
 }
 
-void GameCharacter::CollectPickup(Pickup& pickup)
+void GameCharacter::CollectPickup(Tile& tile)
 {
+	auto pickup = tile.Pickup;
+	if (pickup != Pickup::None)
+	{
+
+		tile.Pickup = Pickup::None;
+	}
+
 }
+
+
 
 void GameCharacter::Attack(GameCharacter& target)
 {

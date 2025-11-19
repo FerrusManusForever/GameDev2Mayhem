@@ -306,6 +306,13 @@ void DungeonGame::Place(GameCharacter& who, Tile& tile, bool immediate)
 	}
 	
 	who.CurrentTile = &tile;
+
+	if (tile.Pickup != Pickup::None)
+	{
+		who.CollectPickup(tile);
+	}
+		
+
 }
 
 void DungeonGame::MoveRoom(Direction dir)

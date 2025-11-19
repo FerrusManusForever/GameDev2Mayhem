@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define USE_LIGHTING 0;
+#define USE_LIGHTING 1;
 #define USE_WOBBLE 0;
 
 
@@ -20,6 +20,8 @@ const int resY = 1080;
 const int GridSizeX = 10;
 const int GridSizeY = 10;
 const float tileSize = resY / GridSizeX;
+static Uint64 now;
+static Uint64 last;
 
 
 /* We will use this renderer to draw into this window every frame. */
@@ -145,6 +147,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */
     SDL_RenderClear(renderer);  /* start with a blank canvas. */    
 
+    last = now;
+    now = SDL_GetPerformanceCounter();
+    double deltaTime = (double)((now - last) / (double)SDL_GetPerformanceFrequency());
+
     // draw the grid
     //for (int x = 0; x < 10; x++)
     for(int y = 0; y < 10; y++)
@@ -213,7 +219,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     }
 
     // Draw the hero
-    Game->Hero->Update(0.001);
+    Game->Hero->Update(deltaTime);
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
     
     

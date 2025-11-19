@@ -10,7 +10,7 @@ class GameCharacter
 public:
 	GameCharacter();
 	~GameCharacter();
-	void CollectPickup(Pickup& pickup);
+	void CollectPickup(Tile& tile);
 	void Attack(GameCharacter& target);
 	void UpdateVisual(double dt); // lerps towards its destination
 	void StartLerping(float x, float y);
