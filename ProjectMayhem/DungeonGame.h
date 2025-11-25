@@ -90,6 +90,9 @@ public:
 	MoveContext TryMove(GameCharacter* whoMove, Tile* tile, Direction dir);
 	void Place(GameCharacter& who, Tile& tile, bool immediate);
 	void MoveRoom(Direction dir);
+	void AddPendingMove(MoveContext move);
+	void DoPendingMoves();
+	void Combat(GameCharacter& attacker, GameCharacter& defender);
 
 private:
 	float tileSizeX;
@@ -103,6 +106,7 @@ private:
 	void ClearGoblins();
 	void ClearPickups();
 	std::vector<Tile*> GetEmptyTiles();
+	std::vector<MoveContext> pendingMoves;
 
 };
 

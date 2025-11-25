@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define USE_LIGHTING 1;
+#define USE_LIGHTING 0;
 #define USE_WOBBLE 0;
 
 
@@ -76,9 +76,10 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     {
 
         // keyboard events    
+
+        // This layout is pretty Pants and could use a reorg!
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-            //Game->Hero->Rect.y -= tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::North);
             if (move.Result == MoveResult::OK)
             {
@@ -87,10 +88,13 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::North);
             }
+            else if (move.Result == MoveResult::Combat)
+            {
+                Game->Combat(*Game->Hero, *move.BlockingCharacter);
+            }
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-            //Game->Hero->Rect.y += tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::South);
             if (move.Result == MoveResult::OK)
             {
@@ -99,11 +103,14 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::South);
             }
+            else if (move.Result == MoveResult::Combat)
+            {
+                Game->Combat(*Game->Hero, *move.BlockingCharacter);
+            }
 
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            //Game->Hero->Rect.x -= tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::West);
             if (move.Result == MoveResult::OK)
             {
@@ -112,10 +119,13 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::West);
             }
+            else if (move.Result == MoveResult::Combat)
+            {
+                Game->Combat(*Game->Hero, *move.BlockingCharacter);
+            }
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            //Game->Hero->Rect.x += tileSize;
             MoveContext move = Game->TryMove(Game->Hero, Game->Hero->CurrentTile, Direction::East);
             if (move.Result == MoveResult::OK)
             {
@@ -123,6 +133,10 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             }
             else if (move.Result == MoveResult::NewRoom) {
                 Game->MoveRoom(Direction::East);
+            }
+            else if (move.Result == MoveResult::Combat)
+            {
+                Game->Combat(*Game->Hero, *move.BlockingCharacter);
             }
         }
     }
@@ -152,10 +166,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     double deltaTime = (double)((now - last) / (double)SDL_GetPerformanceFrequency());
 
     // draw the grid
-    //for (int x = 0; x < 10; x++)
     for(int y = 0; y < 10; y++)
     {
-        //for (int y = 0; y < 10; y++)
         for(int x = 0; x < 10; x++)
         {
             if (Game->Tiles[x][y].Walkable)
@@ -222,7 +234,15 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     Game->Hero->Update(deltaTime);
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
     
+    // Process goblin ai
+    for (auto goblin : Game->Goblins)
+    {
+        goblin->Update(deltaTime);
+    }
+    Game->DoPendingMoves();
     
+
+
     // Draw enemies
     for (auto goblin : Game->Goblins)
     {

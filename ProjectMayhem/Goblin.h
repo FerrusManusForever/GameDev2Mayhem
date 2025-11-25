@@ -10,6 +10,7 @@ public:
 	DungeonGame* GameRef;
 	double MoveInterval = 2.0;
 	void DoAIMove();
+	virtual void Update(double dt);
 private:
 	double moveTimer = 0;
 

@@ -12,7 +12,8 @@ enum MoveResult
 	OK = 0,
 	Blocked = 1,
 	Combat = 2,
-	NewRoom = 3
+	NewRoom = 3,
+	Pending = 4
 };
 
 enum Pickup
@@ -20,6 +21,13 @@ enum Pickup
 	None,
 	Sword,
 	Potion
+};
+
+enum CombatResult
+{
+	Win,
+	Loss,
+	Draw
 };
 
 

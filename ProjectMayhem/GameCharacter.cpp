@@ -2,6 +2,7 @@
 #include <cmath>
 #include <algorithm>
 #include "Tile.h"
+#include <iostream>
 GameCharacter::GameCharacter()
 {
 	lerpTimer = 0;
@@ -18,7 +19,7 @@ void GameCharacter::CollectPickup(Tile& tile)
 	auto pickup = tile.Pickup;
 	if (pickup != Pickup::None)
 	{
-
+		std::cout << "Collected " << pickup << std::endl;
 		tile.Pickup = Pickup::None;
 	}
 

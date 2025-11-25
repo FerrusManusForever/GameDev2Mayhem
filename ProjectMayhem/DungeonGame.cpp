@@ -253,6 +253,8 @@ MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction d
 {
 	MoveContext result;
 	result.Direction = dir;
+	result.MovingCharacter = whoMove;
+
 
 	Tile* neighbour = tile->GetNeighbour(dir);
 	if (neighbour != nullptr)
@@ -270,7 +272,7 @@ MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction d
 			if (neighbour->Resident != nullptr)
 			{
 				result.Result = MoveResult::Combat;
-				result.Character = neighbour->Resident;
+				result.BlockingCharacter = neighbour->Resident;
 			}
 			else
 			{
@@ -310,8 +312,7 @@ void DungeonGame::Place(GameCharacter& who, Tile& tile, bool immediate)
 	if (tile.Pickup != Pickup::None)
 	{
 		who.CollectPickup(tile);
-	}
-		
+	}	
 
 }
 
@@ -352,6 +353,32 @@ void DungeonGame::MoveRoom(Direction dir)
 		// Reset the player's position
 		this->Place(*this->Hero, this->Tiles[tileX][tileY], true);
 	}
+}
+
+void DungeonGame::AddPendingMove(MoveContext move)
+{
+	this->pendingMoves.push_back(move);
+
+}
+
+void DungeonGame::DoPendingMoves()
+{
+	for (auto pendingMove : pendingMoves)
+	{
+		auto moveResult = TryMove(pendingMove.MovingCharacter, pendingMove.Tile, pendingMove.Direction);
+		if (moveResult.Result == MoveResult::OK)
+		{
+			Place(*moveResult.MovingCharacter, *moveResult.Tile, false);
+		}
+	}
+	pendingMoves.clear();
+
+}
+
+void DungeonGame::Combat(GameCharacter& attacker, GameCharacter& defender)
+{
+	std::cout << "Phwoar, combat!" << std::endl;
+
 }
 
 
