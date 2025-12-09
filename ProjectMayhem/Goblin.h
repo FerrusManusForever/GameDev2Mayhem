@@ -14,7 +14,5 @@ public:
 private:
 	double moveTimer = 0;
 
-
-
 };
 

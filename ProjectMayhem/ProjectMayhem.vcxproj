@@ -138,7 +138,9 @@
     <ClCompile Include="DungeonGame.cpp" />
     <ClCompile Include="GameCharacter.cpp" />
     <ClCompile Include="Goblin.cpp" />
+    <ClCompile Include="Minotaur.cpp" />
     <ClCompile Include="MoveContext.cpp" />
+    <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ProjectMayhem.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -148,7 +150,9 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameCharacter.h" />
     <ClInclude Include="Goblin.h" />
+    <ClInclude Include="Minotaur.h" />
     <ClInclude Include="MoveContext.h" />
+    <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>

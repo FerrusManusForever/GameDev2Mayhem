@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include "Enums.h"
+#include <list>
 
 class GameCharacter;
 
@@ -23,10 +24,15 @@ public:
 	GameCharacter* Resident;
 	static int GetDistance(Tile& t1, Tile& t2);
 	Pickup Pickup;
+	std::list<Tile*> GetAllNeighbours();
+	void StoreNeighbours();
 
-private:
+	// Pathfinding vars
+	float G;
+	float H;
 
-	
+private:	
+	std::list<Tile*> AllNeighbours;
 
 
 };

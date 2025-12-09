@@ -1,7 +1,9 @@
+#include "Minotaur.h"
 #include "DungeonGame.h"
 #include <random>
 #include <vector>
 #include <iostream>
+
 
 DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 {
@@ -149,12 +151,12 @@ void DungeonGame::LoadRoom(std::string fileName)
 	}
 
 	ClearPickups();
-	ClearGoblins();
+	ClearEnemies();
 	SpawnPickups();
-	SpawnGoblins();
+	SpawnEnemies();
 }
 
-void DungeonGame::SpawnGoblins()
+void DungeonGame::SpawnEnemies()
 {
 	int numGoblins = rand() % 4;
 	auto availableTiles = GetEmptyTiles();
@@ -174,7 +176,11 @@ void DungeonGame::SpawnGoblins()
 		availableTiles.erase(availableTiles.begin() + index);
 	}
 
-
+	if (rand() % 10 == 5)
+	{
+		// spawn a minotaur
+		this->mino = new Minotaur(this);
+	}
 }
 
 void DungeonGame::SpawnPickups()
@@ -201,7 +207,7 @@ void DungeonGame::SpawnPickups()
 	}
 }
 
-void DungeonGame::ClearGoblins()
+void DungeonGame::ClearEnemies()
 {
 	for (int y = 0; y < RoomSize; y++)
 	{
@@ -218,8 +224,11 @@ void DungeonGame::ClearGoblins()
 		delete *itr;
 		itr = Goblins.erase(itr);		
 	}
-		
 
+	if (this->mino != nullptr)
+	{
+		delete this->mino;		
+	}
 }
 
 void DungeonGame::ClearPickups()
@@ -237,9 +246,9 @@ void DungeonGame::ClearPickups()
 
 void DungeonGame::LinkTiles()
 {
-	for (int x = 0; x < RoomSize; x++)
+	for (int y = 0; y < RoomSize; y++)
 	{
-		for (int y = 0; y < RoomSize; y++)
+		for (int x = 0; x < RoomSize; x++)
 		{
 			this->Tiles[x][y].NeighbourNorth = GetNeighbour(&Tiles[x][y], Direction::North);
 			this->Tiles[x][y].NeighbourSouth = GetNeighbour(&Tiles[x][y], Direction::South);
@@ -247,6 +256,17 @@ void DungeonGame::LinkTiles()
 			this->Tiles[x][y].NeighbourWest = GetNeighbour(&Tiles[x][y], Direction::West);
 		}
 	}
+
+	// cache neighbours
+	for (int y = 0; y < RoomSize; y++)
+	{
+		for (int x = 0; x < RoomSize; x++)
+		{
+			this->Tiles[x][y].StoreNeighbours();
+		}
+	}
+
+
 }
 
 MoveContext DungeonGame::TryMove(GameCharacter* whoMove, Tile* tile, Direction dir)

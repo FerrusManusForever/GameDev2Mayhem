@@ -15,7 +15,6 @@ bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 Tile::Tile()
 {
 	this-> Pickup = Pickup::None;
-
 }
 
 void Tile::Configure(SDL_Color& color, float x, float y, float size,
@@ -125,4 +124,29 @@ int Tile::GetDistance(Tile& t1, Tile& t2)
 	int dY = std::abs(t1.YCoord - t2.YCoord);
 
 	return dX + dY;
+}
+
+std::list<Tile*> Tile::GetAllNeighbours()
+{
+	return this->AllNeighbours;
+}
+
+void Tile::StoreNeighbours()
+{
+	if (this->NeighbourNorth != nullptr)
+	{
+		this->AllNeighbours.push_back(NeighbourNorth);
+	}
+	if (this->NeighbourEast != nullptr)
+	{
+		this->AllNeighbours.push_back(NeighbourEast);
+	}
+	if (this->NeighbourSouth != nullptr)
+	{
+		this->AllNeighbours.push_back(NeighbourSouth);
+	}
+	if (this->NeighbourWest != nullptr)
+	{
+		this->AllNeighbours.push_back(NeighbourWest);
+	}
 }

@@ -11,6 +11,9 @@
 #include <vector>
 #include <list>
 #include "Goblin.h"
+
+class Minotaur;
+
 const static std::string path_Hero = "Sprites/Hero_Sword.png";
 const static std::string path_Hero_Unarmed = "Sprites/Hero_no_Sword.png";
 
@@ -83,6 +86,7 @@ public:
 	SDL_Texture* GoblinTextures[4];
 	std::map<Pickup, SDL_Texture*> PickupTextures;
 	std::list<Goblin*> Goblins;
+	Minotaur* mino;
 
 
 	Tile* GetNeighbour(Tile* origin, Direction dir);
@@ -101,9 +105,9 @@ private:
 	void LoadRoom(std::string file);	
 	int currentRoomX;
 	int currentRoomY;
-	void SpawnGoblins();
+	void SpawnEnemies();
 	void SpawnPickups();
-	void ClearGoblins();
+	void ClearEnemies();
 	void ClearPickups();
 	std::vector<Tile*> GetEmptyTiles();
 	std::vector<MoveContext> pendingMoves;
